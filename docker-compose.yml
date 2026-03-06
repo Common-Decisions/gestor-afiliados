@@ -1,0 +1,30 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gestor-afiliados-backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    ports:
+      - "3021:3021"
+    networks:
+      - gestor-afiliados-net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: gestor-afiliados-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3020:3020"
+    networks:
+      - gestor-afiliados-net
+
+networks:
+  gestor-afiliados-net:
+    driver: bridge
