@@ -7,7 +7,6 @@ pipeline {
   }
 
   environment {
-    NETWORK_NAME = "gestor-afiliados-net"
     BACKEND_CONTAINER = "gestor-afiliados-backend"
     FRONTEND_CONTAINER = "gestor-afiliados-frontend"
     BACKEND_IMAGE = "gestor-afiliados/backend:latest"
@@ -30,8 +29,6 @@ pipeline {
       steps {
         sh '''
           set -eu
-          docker network inspect "$NETWORK_NAME" >/dev/null 2>&1 || docker network create "$NETWORK_NAME"
-
           docker build --no-cache -t "$BACKEND_IMAGE" ./backend
           docker build --no-cache -t "$FRONTEND_IMAGE" ./frontend
 
@@ -40,8 +37,6 @@ pipeline {
 
           docker run -d \
             --name "$BACKEND_CONTAINER" \
-            --network "$NETWORK_NAME" \
-            --network-alias backend \
             --restart unless-stopped \
             --env-file backend/.env \
             -p 3021:3021 \
@@ -49,8 +44,8 @@ pipeline {
 
           docker run -d \
             --name "$FRONTEND_CONTAINER" \
-            --network "$NETWORK_NAME" \
             --restart unless-stopped \
+            --add-host backend:host-gateway \
             -p 3020:3020 \
             "$FRONTEND_IMAGE"
 
