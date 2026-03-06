@@ -63,28 +63,7 @@ function DashboardPage() {
         {loading ? <p className="text-body-secondary">Loading metrics...</p> : null}
         {error ? <div className="alert alert-danger">{error}</div> : null}
 
-        {!loading && !error ? (
-          <>
-            <div className="row g-3 g-md-4">
-              {formattedStats.map((item) => (
-                <div className="col-12 col-md-6 col-xxl-4" key={item.label}>
-                  <article className="metric-card p-4 h-100">
-                    <div className="small text-body-secondary">{item.label}</div>
-                    <div className="display-6 fw-semibold mt-2">{item.value}</div>
-                  </article>
-                </div>
-              ))}
-            </div>
-
-            <section className="insight-panel mt-4 mt-lg-5 p-4">
-              <h2 className="h5 mb-2">Quick insight</h2>
-              <p className="mb-0 text-body-secondary">
-                Conversion pace is healthy today. Consider triggering a short bonus campaign for top
-                partners to maximize end-of-day volume.
-              </p>
-            </section>
-          </>
-        ) : null}
+        
       </section>
     </main>
   );
